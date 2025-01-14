@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Research Portal{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-5 text-center bg-primary text-white">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Welcome to the Research Portal</h1>
+        <p class="lead">Explore groundbreaking research from various departments and renowned authors.</p>
+        <a href="{% url 'research' %}" class="btn btn-light btn-lg mt-3">
+            <i class="fas fa-search me-2"></i>Browse Research
+        </a>
+    </div>
+</section>
+
+<!-- Recent Research Section -->
+<section class="my-5">
+    <div class="container">
+        <h2 class="mb-4 text-center">Recent Research</h2>
+        <div class="row">
+            {% for research in recent_research %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm hover-shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ research.title }}</h5>
+                        <p class="card-text">{{ research.summary|truncatewords:20 }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <a href="{% url 'research_detail' research.id %}" class="btn btn-outline-primary">
+                            <i class="fas fa-book-open me-2"></i>Read More
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Authors Section -->
+<section class="my-5 py-5 bg-light">
+    <div class="container">
+        <h2 class="mb-4 text-center">Featured Authors</h2>
+        <div class="row">
+            {% for author in featured_authors %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm text-center hover-shadow">
+                    <div class="card-body">
+                        <img src="{% static 'images/default-avatar.png' %}" alt="{{ author.first_name }} {{ author.last_name }}" class="rounded-circle mb-3" width="100">
+                        <h5 class="card-title">{{ author.first_name }} {{ author.last_name }}</h5>
+                        <p class="card-text text-muted">{{ author.email }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <a href="{% url 'author_detail' author.id %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-user me-2"></i>View Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="bg-primary text-white text-center py-5">
+    <div class="container">
+        <h2 class="mb-3">Ready to contribute?</h2>
+        <p class="lead mb-4">Join our community of researchers and share your findings with the world.</p>
+        <a href="{% url 'admin:login' %}" class="btn btn-light btn-lg">
+            <i class="fas fa-sign-in-alt me-2"></i>Login to Submit Research
+        </a>
+    </div>
+</section>
+{% endblock %}
