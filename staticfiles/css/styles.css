@@ -1,0 +1,86 @@
+/* styles.css */
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+footer {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+}
+
+/* Ensure body and html are full height */
+html, body {
+    height: 100%;
+}
+
+/* Container for page content to push footer down */
+main.container {
+    flex-grow: 1;
+}
+
+/* Footer should stay at the bottom */
+footer {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+
+
+/* Authors page custom styles */
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #343a40;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+.btn-secondary {
+    background-color: #343a40;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #495057;
+}
+
+
+/* Research page custom styles */
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #343a40;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}

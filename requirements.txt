@@ -3,3 +3,5 @@ django-rest-framework
 gunicorn
 whitenoise
 django-unfold
+python-dotenv
+psycopg2-binary
