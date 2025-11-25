@@ -1,80 +1,24 @@
 {% extends 'base.html' %}
 
-{% block title %}Research - Research Portal{% endblock %}
+{% block title %}Research List{% endblock %}
 
 {% block content %}
-<section class="my-5">
-    <div class="container">
-        <h1 class="mb-4 text-center">Explore Our Research</h1>
-        
-        <!-- Search Form -->
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-6">
-                <form action="{% url 'research' %}" method="get" class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search research..." aria-label="Search" name="q" value="{{ request.GET.q }}">
-                    <button class="btn btn-primary" type="submit">
-                        <i class="fas fa-search me-2"></i>Search
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Research List -->
-        <div class="row">
-            {% for research in all_research %}
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card h-100 shadow-sm hover-shadow">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ research.title }}</h5>
-                        <p class="card-text">{{ research.summary|truncatewords:20 }}</p>
-                        <p class="text-muted">
-                            <small>
-                                <i class="fas fa-calendar-alt me-2"></i>{{ research.publication_date|date:"F d, Y" }}
-                            </small>
-                        </p>
-                    </div>
-                    <div class="card-footer bg-transparent border-top-0">
-                        <a href="{% url 'research_detail' research.id %}" class="btn btn-outline-primary">
-                            <i class="fas fa-book-open me-2"></i>Read More
-                        </a>
-                    </div>
+<div class="container">
+    <h2 class="mb-4">All Research</h2>
+    <div class="row">
+        {% for item in all_research %}
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.title }}</h5>
+                    <p class="card-text">{{ item.summary|truncatewords:30 }}</p>
+                    <a href="{% url 'research_detail' item.id %}" class="btn btn-primary">Read More</a>
                 </div>
             </div>
-            {% empty %}
-            <div class="col-12 text-center">
-                <p class="lead text-muted">No research available at the moment.</p>
-            </div>
-            {% endfor %}
         </div>
-
-        <!-- Pagination -->
-        {% if is_paginated %}
-        <nav aria-label="Page navigation" class="mt-5">
-            <ul class="pagination justify-content-center">
-                {% if page_obj.has_previous %}
-                <li  class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                {% endif %}
-
-                {% for num in page_obj.paginator.page_range %}
-                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                </li>
-                {% endfor %}
-
-                {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-                {% endif %}
-            </ul>
-        </nav>
-        {% endif %}
+        {% empty %}
+        <p>No research found.</p>
+        {% endfor %}
     </div>
-</section>
+</div>
 {% endblock %}

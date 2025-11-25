@@ -1,79 +1,22 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ research.title }} - Research Details{% endblock %}
+{% block title %}{{ research.title }}{% endblock %}
 
 {% block content %}
-<section class="my-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 offset-lg-2">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <h1 class="card-title mb-4">{{ research.title }}</h1>
-                        <p class="text-muted">
-                            <i class="fas fa-building me-2"></i>
-                            <strong>Department:</strong> {{ research.department.name }}
-                        </p>
-                        <hr>
-                        <div class="mb-4">
-                            <h5 class="mb-3">Summary</h5>
-                            <p class="card-text">{{ research.summary }}</p>
-                        </div>
+<div class="container">
+    <h2>{{ research.title }}</h2>
+    <p><strong>Department:</strong> {{ research.department }}</p>
+    <p><strong>Authors:</strong>
+        {% for author in research.authors.all %}
+            {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    <hr>
+    <h4>Summary</h4>
+    <p>{{ research.summary }}</p>
 
-                        <div class="mb-4">
-                            <h5 class="mb-3">Authors</h5>
-                            <ul class="list-group list-group-flush">
-                                {% for author in research.authors.all %}
-                                <li class="list-group-item">
-                                    <a href="{% url 'author_detail' author.id %}" class="text-decoration-none">
-                                        <i class="fas fa-user me-2"></i>
-                                        {{ author.first_name }} {{ author.last_name }}
-                                    </a>
-                                </li>
-                                {% empty %}
-                                <li class="list-group-item text-muted">No authors available.</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-
-                        <div class="mb-4">
-                            <h5 class="mb-3">Research File</h5>
-                            {% if research.file %}
-                            <a href="{{ research.file.url }}" class="btn btn-primary" download>
-                                <i class="fas fa-download me-2"></i>Download File
-                            </a>
-                            {% else %}
-                            <p class="text-muted"><i class="fas fa-exclamation-circle me-2"></i>No file available.</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Related Research -->
-<section class="my-5 bg-light py-5">
-    <div class="container">
-        <h2 class="mb-4 text-center">Related Research</h2>
-        <div class="row">
-            {% for related_research in related_researches %}
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm hover-shadow">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ related_research.title }}</h5>
-                        <p class="card-text">{{ related_research.summary|truncatewords:20 }}</p>
-                    </div>
-                    <div class="card-footer bg-transparent border-top-0">
-                        <a href="{% url 'research_detail' related_research.id %}" class="btn btn-outline-primary">
-                            <i class="fas fa-book-open me-2"></i>Read More
-                        </a>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
+    {% if research.file %}
+    <a href="{{ research.file.url }}" class="btn btn-success" target="_blank">Download File</a>
+    {% endif %}
+</div>
 {% endblock %}
