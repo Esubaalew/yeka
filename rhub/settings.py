@@ -26,7 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security
 # -----------------------------
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-unbugs38!0af)_y%&vz8k5scj-@#7$jv=)s)vvo2(u7kq&i^jh")
-DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t")
+# DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t")
+DEBUG = True
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", ".koyeb.app,localhost,127.0.0.1").split(",")
 
 # -----------------------------
