@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Research, Author
+from django.db.models import Q
 
 
 # Home page view
@@ -62,6 +63,24 @@ def research_detail(request, research_id):
     }
 
     return render(request, 'research_detail.html', context)
-    
+
+
+# Search view
+def search_results(request):
+    query = request.GET.get('q')
+    if query:
+        results = Research.objects.filter(
+            Q(title__icontains=query) | Q(summary__icontains=query)
+        )
+    else:
+        results = Research.objects.none()
+
+    context = {
+        'query': query,
+        'results': results,
+    }
+    return render(request, 'search_results.html', context)
+
+
 def view_404(request, exception):
     return render(request, '404.html', status=404)

@@ -1,26 +1,30 @@
-FROM python:3-alpine AS builder
+# Stage 1: Builder
+FROM python:3.11-slim AS builder
 
 WORKDIR /app
 
-RUN python3 -m venv venv
-ENV VIRTUAL_ENV=/app/venv
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+# Set up virtual environment
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
+# Install dependencies
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Stage 2
-FROM python:3-alpine AS runner
+# Stage 2: Runner
+FROM python:3.11-slim AS runner
 
-ENV VIRTUAL_ENV=/app/venv
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+WORKDIR /app
+
+# Copy virtual environment and application code
+COPY --from=builder /opt/venv /opt/venv
+COPY . .
+
+# Set environment variables
+ENV PATH="/opt/venv/bin:$PATH"
+ENV PYTHONUNBUFFERED=1
 ENV PORT=8000
 
-WORKDIR /app
-
-COPY --from=builder /app/venv venv
-COPY rhub rhub
-
+# Expose port and run the application
 EXPOSE ${PORT}
-
-CMD gunicorn --bind :${PORT} --workers 2 rhub.wsgi
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "rhub.wsgi"]

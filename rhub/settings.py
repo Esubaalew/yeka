@@ -85,24 +85,29 @@ WSGI_APPLICATION = "rhub.wsgi.application"
 # -----------------------------
 # Database
 # -----------------------------
-tmpPostgres = urlparse(os.getenv("DATABASE_URL", ""))
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-db_name = tmpPostgres.path
-if isinstance(db_name, bytes):
-    db_name = db_name.decode()
-db_name = db_name.lstrip("/")
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": db_name,
-        "USER": tmpPostgres.username,
-        "PASSWORD": tmpPostgres.password,
-        "HOST": tmpPostgres.hostname,
-        "PORT": tmpPostgres.port or 5432,
-        "OPTIONS": dict(parse_qsl(tmpPostgres.query)),
+if DATABASE_URL:
+    tmpPostgres = urlparse(DATABASE_URL)
+    db_name = tmpPostgres.path.lstrip("/")
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": db_name,
+            "USER": tmpPostgres.username,
+            "PASSWORD": tmpPostgres.password,
+            "HOST": tmpPostgres.hostname,
+            "PORT": tmpPostgres.port or 5432,
+            "OPTIONS": dict(parse_qsl(tmpPostgres.query)),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # -----------------------------
 # Password validation

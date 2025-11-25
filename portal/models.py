@@ -23,9 +23,9 @@ class Department(models.Model):
 class Research(models.Model):
     title = models.CharField(max_length=200)
     summary = models.TextField()
-    authors = models.ManyToManyField(Author, related_name='researches')  # Many-to-Many relationship
+    authors = models.ManyToManyField(Author, related_name='researches', db_index=True)  # Many-to-Many relationship
     department = models.ForeignKey(Department, on_delete=models.CASCADE,
-                                   related_name='researches')  # Many-to-One relationship
+                                   related_name='researches', db_index=True)  # Many-to-One relationship
     file = models.FileField(upload_to='research_files/', blank=True, null=True)  # File upload (PDF/Word)
 
     def __str__(self):
